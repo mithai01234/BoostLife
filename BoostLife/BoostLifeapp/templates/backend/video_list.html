@@ -1,0 +1,101 @@
+ {% include 'backend/header.html' %}
+   {% include 'backend/sidebar.html' %}
+
+
+ {% load static %}
+  <!-- Content Wrapper. Contains page content -->
+<!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0"><?= $page_title;?></h1>
+          </div><!-- /.col -->
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active">Video</li>
+            </ol>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+
+      <div class="container-xl">
+
+    <div class="table-responsive">
+        <div class="table-wrapper">
+             <div class="col-12 ">
+                <a href="{%  url 'add_video' %}"><button class="btn btn-success btn-sm"><i class="fa fa-plus"></i> Add  </button></a>
+
+              </div>
+            <div class="table-title">
+                <div class="row">
+                    <div class="col-sm-8"><h2>Video <b>Details</b></h2></div>
+
+                </div>
+            </div>
+
+            <table id="example1" class="table table-striped table-hover table-bordered">
+     <thead>
+        <tr>
+            <th>#</th>
+            <th>Video ID</th>
+            <th>Name</th>
+            <th>Time</th>
+            <th>Repetition Time</th>
+            <th>Video</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for i in videos %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>Video_No._{{ i.id }}</td>
+            <td>{{ i.name }}</td>
+            <td>{{ i.time }}</td>
+            <td>{{ i.repetition_time }}</td>
+            <td>
+                {% if i.video %}
+                <video width="200" controls>
+                    <source src="{{ i.video.url }}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                {% else %}
+                <p>No video available</p>
+                {% endif %}
+            </td>
+            <td>
+                {% if i.status %}
+                <a href="{% url 'deactivate_video' i.id %}" class="btn btn-danger text-white">Deactivate</a>
+                {% else %}
+                <a href="{% url 'activate_video' i.id %}" class="btn btn-success text-white">Activate</a>
+                {% endif %}
+            </td>
+            <td>
+                <a href="{% url 'view_video' i.id %}" class="view" title="View" data-toggle="tooltip"><i class="fa fa-eye"></i></a>
+                <a href="{% url 'edit_video' i.id %}" class="edit" title="Edit" data-toggle="tooltip"><i class="fa fa-edit"></i></a>
+                <a href="{% url 'delete_video' i.id %}" class="delete" title="Delete" data-toggle="tooltip"><i class="fa fa-trash"></i></a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+        </div>
+    </div>
+</div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+
+      <!-- /.content -->
+  </div>
+{% include 'backend/footer.html' %}
+
+  <!-- /.navbar -->

@@ -1,0 +1,212 @@
+{% load static %}
+<aside class="main-sidebar sidebar-dark-primary elevation-4" style="background-color:#001F3F">
+    <!-- Brand Logo -->
+    <a href="{%  url 'backend/dashboard' %}" class="brand-link">
+      <img src="{%  static 'assets/images/boost.jpeg' %}" alt="BoostLife Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+      <span class="brand-text font-weight-light">Boost Life</span>
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <!-- Sidebar user panel (optional) -->
+<!--      <div class="user-panel mt-3 pb-3 mb-3 d-flex">-->
+<!--        <div class="image">-->
+<!--          <img src="{%  static 'assets/images/Frozenwala logo.png' %}" class="img-circle elevation-2" alt="User Image">-->
+<!--        </div>-->
+<!--        <div class="info">-->
+<!--          <a href="#" class="d-block">Admin Panel</a>-->
+<!--        </div>-->
+<!--      </div>-->
+
+      <!-- SidebarSearch Form -->
+
+
+      <!-- Sidebar Menu -->
+      <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+          <!-- Add icons to the links using the .nav-icon class
+               with font-awesome or any other icon font library -->
+          <li class="nav-item menu-open">
+
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{%  url 'backend/dashboard' %}" class="nav-link">
+<!--                  <i class="far fa-circle nav-icon"></i>-->
+                  <p>Dashboard</p>
+                </a>
+              </li>
+
+            </ul>
+          </li>
+<li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-stopwatch"></i>
+              <p>
+               Exercise
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{%  url 'workout_list' %}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Manage Excersise</p>
+                </a>
+              </li>
+
+            </ul>
+<ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{%  url 'video_list' %}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Manage Video</p>
+                </a>
+              </li>
+
+            </ul>
+<ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{%  url 'workbanner_list' %}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Manage Banner</p>
+                </a>
+              </li>
+
+            </ul>
+
+          </li>
+
+
+        <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-users"></i>
+              <p>
+               User
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{%  url 'customerlist' %}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>User List</p>
+                </a>
+              </li>
+
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-bullhorn"></i>
+              <p>
+               Banner
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{%  url 'banner_list' %}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Manage Banner</p>
+                </a>
+              </li>
+
+            </ul>
+          </li>
+<li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-folder"></i>
+              <p>
+               Category
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{%  url 'catagoryapp' %}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Manage Category</p>
+                </a>
+              </li>
+
+            </ul>
+          </li>
+<li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-shopping-cart"></i>
+              <p>
+               Products
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{%  url 'productapp' %}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Manage Product</p>
+                </a>
+              </li>
+
+            </ul>
+          </li>
+<li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-warehouse"></i>
+              <p>
+               Inventory
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{%  url 'stock' %}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Manage Inventory</p>
+                </a>
+              </li>
+
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-rupee-sign"></i>
+              <p>
+               DeliveryCharge
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{%  url 'chargeapp' %}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Manage DeliveryCharge</p>
+                </a>
+              </li>
+
+            </ul>
+          </li>
+<li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-user"></i>
+              <p>
+               Influencer
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{%  url 'influencer_list' %}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Manage Influencer</p>
+                </a>
+              </li>
+
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+  </aside>
+

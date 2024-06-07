@@ -1,0 +1,118 @@
+{% include 'backend/header.html' %}
+{% include 'backend/sidebar.html' %}
+
+{% load static %}
+<style>
+    .success-message {
+        color: green;
+        font-weight: bold;
+        border: 1px solid green;
+        padding: 10px;
+        margin: 10px 0;
+        background-color: #dff0d8; /* Optional background color */
+    }
+</style>
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content">
+        <div class="container-fluid">
+            <br><br>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card card-info">
+                        <div class="card-header">
+                            <h3 class="card-title">Edit Video</h3>
+                        </div>
+                        <div class="card-body">
+                            <form method="POST" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <label for="workout">Workout:</label>
+                                        <select id="workout" name="workout" required class="form-control">
+                                            {% for workout in workouts %}
+                                                <option value="{{ workout.id }}" {% if video.workout.id == workout.id %} selected {% endif %}>Exercise_No._{{ workout.id }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <label for="name">Name:</label>
+                                        <input type="text" id="name" name="name" maxlength="100" required class="form-control" value="{{ video.name }}">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <label for="time">Time:</label>
+                                        <input type="text" id="time" name="time" maxlength="50" required class="form-control" readonly value="{{ video.time }}">
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <label for="repetition_time">Repetition Time:</label>
+                                        <input type="text" id="repetition_time" name="repetition_time" maxlength="50" required class="form-control" value="{{ video.repetition_time }}">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6">
+    <label for="video">Video:</label>
+    <input type="file" name="video" id="video_input" onchange="previewVideo(event)" class="form-control">
+    <video id="video_preview" width="200" height="150" controls style="display: none;">
+        <!-- Display the currently selected video first -->
+        <source src="{{ video.video.url }}" type="video/mp4">
+        <!-- Display the newly selected video -->
+        <source id="new_video_source" src="" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+</div> <div class="col-lg-6">
+                                         <br>
+                                        <label for="repetition_time">Recommended:</label>
+            <input type="checkbox" id="recommended" name="recommended"  {% if video.recommended %}checked{% endif %}>
+                                    </div>
+
+                                </div>
+                                <div class="mt-4">
+                                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                                    <a href="{% url 'video_list' %}" class="btn btn-danger">Back</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- /.content -->
+</div>
+
+<script>
+    function previewVideo(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const videoPreview = document.getElementById('video_preview');
+            const videoSource = videoPreview.querySelector('source');
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                videoSource.src = e.target.result;
+                videoPreview.style.display = 'block';
+                videoPreview.load();
+
+                videoPreview.onloadedmetadata = function() {
+                    const duration = videoPreview.duration;
+                    document.getElementById('time').value = formatTime(duration);
+                };
+            };
+
+            reader.readAsDataURL(file);
+        }
+    }
+
+  function formatTime(seconds) {
+    const h = Math.floor(seconds / 3600);
+    const m = Math.floor((seconds % 3600) / 60);
+    const s = Math.floor(seconds % 60);
+    return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+}
+
+
+</script>
+{% include 'backend/footer.html' %}

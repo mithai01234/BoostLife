@@ -1,0 +1,168 @@
+ {% include 'backend/header.html' %}
+   {% include 'backend/sidebar.html' %}
+
+
+ {% load static %}
+ <style>
+    .success-message {
+        color: green;
+        font-weight: bold;
+        border: 1px solid green;
+        padding: 10px;
+        margin: 10px 0;
+        background-color: #dff0d8; /* Optional background color */
+    }
+</style>
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+   <section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-info">
+                    <div class="card-header">
+                        <h3 class="card-title">View Product</h3>
+                    </div>
+                    <div class="card-body">
+                       {%if sel_proform %}
+
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <label for="title">Name:</label>     {{sel_proform.name}}
+                                </div>
+<!--                                <div class="col-lg-6">-->
+<!--                                    <label for="description">Description:</label>   <br>  {{sel_proform.description}}-->
+<!--</div>-->
+                            </div>
+                            <hr>
+                            <br>
+        <br>
+                            <br>
+                            <hr>
+
+
+
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="row align-items-center py-3">
+        <div class="col-md-3 ps-5">
+            <label class="mb-0">Item Photo</label>
+        </div>
+         <div class="col-md-9 pe-5">
+{% if sel_proform.image %}
+                        <img src="{{ sel_proform.image.url }}" alt="Item Photo" width="200" height="150">
+                    {% else %}
+                        <p>No image found.</p>
+                    {% endif %}
+                </div>
+    </div>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <label for="category">Category:</label>
+                                    {{sel_proform.cat_name.name}}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <label for="item_old_price">Item's Old Price(MRP):</label>    {{sel_proform.item_old_price}}
+                                </div>
+                                <div class="col-lg-6">
+                                    <label for="discount">Discount (%):</label>   {{sel_proform.discount}}
+                                </div>
+                            </div>
+                            <div class="row">
+<!--                                <div class="col-lg-6">-->
+<!--                                    <label for="item_quantity">Item Quantity:</label>-->
+<!--                                    <input type="number" id="item_quantity" name="item_quantity" required class="form-control">-->
+<!--                                </div>-->
+                                <div class="col-lg-6">
+                                    <label for="item_new_price">Offer Price:</label>   {{sel_proform.item_new_price}}
+                                </div>
+
+ <div class="col-lg-6">
+                                     <label for="goal" class="form-control-label">Goal Category</label>
+                                     {% if sel_proform.goal == "1" %}
+        Loose weight
+    {% elif sel_proform.goal == "2" %}
+        Gain weight
+    {% elif sel_proform.goal == "3" %}
+        Gain muscle
+    {% elif sel_proform.goal == "4" %}
+        Shape body
+    {% elif sel_proform.goal == "5" %}
+        Others
+    {% else %}
+        Unknown
+    {% endif %}
+
+ </div>
+                            </div>
+                            <div class="mt-4">
+                                <a href="{% url 'productapp' %}" class="btn btn-danger">Back</a>
+                            </div>
+{% endif  %}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+    <!-- /.content -->
+  </div>
+
+<script>
+   // Function to calculate discount
+function calculateDiscount() {
+    // Get values from input fields
+    var itemOldPrice = parseFloat(document.getElementById('item_old_price').value);
+    var itemNewPrice = parseFloat(document.getElementById('item_new_price').value);
+
+    // Calculate discount
+    var discount = ((itemOldPrice - itemNewPrice) / itemOldPrice) * 100;
+
+    // Round off the discount to the nearest integer
+    discount = Math.round(discount);
+
+    // Update the value in the discount input field
+    document.getElementById('discount').value = discount;
+}
+
+// Add event listeners to trigger the calculation
+document.getElementById('item_old_price').addEventListener('input', calculateDiscount);
+document.getElementById('item_new_price').addEventListener('input', calculateDiscount);
+
+// Call the calculation function when the page is fully loaded
+window.addEventListener('load', function() {
+    calculateDiscount();
+});
+
+</script>
+<script>
+        function previewPhoto(event) {
+            const reader = new FileReader();
+            reader.onload = function () {
+                const preview = document.getElementById('item_photo_preview');
+                preview.src = reader.result;
+            }
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    </script>
+
+     <script>
+        document.querySelectorAll('textarea.ckeditor').forEach(function(textarea) {
+            CKEDITOR.replace(textarea.id, {
+                // Custom configuration options here
+                height: 300
+            });
+        });
+    </script>
+     <script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
+
+{% include 'backend/footer.html' %}
+

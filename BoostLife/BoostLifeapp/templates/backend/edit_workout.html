@@ -1,0 +1,89 @@
+{% include 'backend/header.html' %}
+{% include 'backend/sidebar.html' %}
+{% load static %}
+<style>
+    .success-message {
+        color: green;
+        font-weight: bold;
+        border: 1px solid green;
+        padding: 10px;
+        margin: 10px 0;
+        background-color: #dff0d8; /* Optional background color */
+    }
+</style>
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card card-info">
+                        <div class="card-header">
+                            <h3 class="card-title">Edit Workout</h3>
+                        </div>
+                        <div class="card-body">
+                          {% if workout %}
+    <form method="POST" enctype="multipart/form-data" action="{% url 'edit_workout' workout.id %}">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-lg-6">
+                <label for="level">Level:</label>
+                <input type="text" value="{{ workout.level }}" id="level" name="level" maxlength="50" required class="form-control">
+            </div>
+            <div class="col-lg-6">
+                <label for="name">Name:</label>
+                <input type="text" value="{{ workout.name }}" id="name" name="name" maxlength="100" required class="form-control">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <label for="time">Time:</label>
+                <input type="text" value="{{ workout.time }}" id="time" name="time" maxlength="50" required class="form-control">
+            </div>
+            <div class="col-lg-6">
+                <label for="cal">Calories:</label>
+                <input type="text" value="{{ workout.cal }}" id="cal" name="cal" maxlength="50" required class="form-control">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <label for="num_exercise">Number of Exercises:</label>
+                <input type="text" value="{{ workout.num_exercise }}" id="num_exercise" name="num_exercise" maxlength="50" required class="form-control">
+            </div>
+            <div class="col-lg-6">
+                <label for="image">Image:</label>
+                <input type="file" id="image" name="image" class="form-control">
+                {% if workout.image %}
+                    <img src="{{ workout.image.url }}" alt="Workout Photo" width="200" height="150">
+                {% endif %}
+            </div>
+        </div>
+        <div class="mt-4">
+            <button type="submit" class="btn btn-primary">Update Workout</button>
+            <a href="{% url 'workout_list' %}" class="btn btn-danger">Back</a>
+        </div>
+    </form>
+{% endif %}
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- /.content -->
+</div>
+
+<script>
+    document.querySelectorAll('textarea.ckeditor').forEach(function (textarea) {
+        CKEDITOR.replace(textarea.id, {
+            // Custom configuration options here
+            height: 300
+        });
+    });
+</script>
+<script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
+
+{% include 'backend/footer.html' %}
