@@ -1,0 +1,88 @@
+{% include 'backend/header.html' %}
+{% include 'backend/sidebar.html' %}
+
+{% load static %}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0">{{ page_title }}</h1>
+                </div><!-- /.col -->
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">{{ page_title }}</li>
+                    </ol>
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </div>
+
+    <div class="container-xl">
+        <div class="table-responsive">
+            <div class="table-wrapper">
+                <div class="col-12">
+                    <a href="{% url 'partner_add' %}"><button class="btn btn-success btn-sm"><i class="fa fa-plus"></i> Add Partner</button></a>
+                </div>
+                <div class="table-title">
+                    <div class="row">
+                        <div class="col-sm-8"><h2>Partner <b>Details</b></h2></div>
+                    </div>
+                </div>
+
+                <table id="example1" class="table table-striped table-hover table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Sl No</th>
+                            <th>Partner ID</th>
+                            <th>Name</th>
+                            <th>Store Name</th>
+                            <th>Phone Number</th>
+                            <th>Address</th>
+                            <th>Logo</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for partner in partners %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ partner.partner_id }}</td>
+                                <td>{{ partner.name }}</td>
+                                <td>{{ partner.store_name }}</td>
+                                <td>{{ partner.phone_number }}</td>
+                                <td>{{ partner.address }}</td>
+                                <td>
+                                    {% if partner.logo %}
+                                        <img src="{{ partner.logo.url }}" alt="Logo" width="100" height="70">
+                                    {% else %}
+                                        <img src="{% static 'assets/images/placeholder.png' %}" alt="Logo" width="100" height="70">
+                                    {% endif %}
+                                </td>
+                                <td>
+                                     {% if partner.status %}
+                        <a href="{% url 'deactivate_partner' partner.id %}" class="btn btn-danger text-white">Deactivate</a>
+                    {% else %}
+                        <a href="{% url 'activate_partner' partner.id %}" class="btn btn-success text-white">Activate</a>
+                    {% endif %}
+                                </td>
+                                <td>
+                                    <a href="{% url 'partner_view' partner.id %}" class="view" title="View" data-toggle="tooltip"><i class="fa fa-eye"></i></a>
+                                    <a href="{% url 'partner_edit' partner.id %}" class="edit" title="Edit" data-toggle="tooltip"><i class="fa fa-edit"></i></a>
+                                    <a href="{% url 'partner_delete' partner.id %}" class="delete" title="Delete" data-toggle="tooltip"><i class="fa fa-trash"></i></a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% include 'backend/footer.html' %}

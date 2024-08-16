@@ -1,0 +1,118 @@
+
+
+  <!-- /.navbar -->
+ {% include 'backend/header.html' %}
+   {% include 'backend/sidebar.html' %}
+
+
+ {% load static %}
+ <style>
+    .success-message {
+        color: green;
+        font-weight: bold;
+        border: 1px solid green;
+        padding: 10px;
+        margin: 10px 0;
+        background-color: #dff0d8; /* Optional background color */
+    }
+</style>
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+   <section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            {% if message %}
+    <ul class="messages">
+            <p  class="alert-danger">{{ message }}</p>
+    </ul>
+{% endif %}
+            <div class="col-md-12">
+                <div class="card card-info">
+                    <div class="card-header">
+                        <h3 class="card-title">Edit Banner</h3>
+                    </div>
+                    <div class="card-body">
+                       <form method="POST" enctype="multipart/form-data" action="{% url 'diet_update' diet.id %}">
+    {% csrf_token %}
+    <div class="row">
+        <div class="col-lg-6">
+            <label for="name">Name:</label>
+            <input type="text" id="name" value="{{ diet.name }}" name="name" maxlength="255" required class="form-control">
+        </div>
+        <div class="col-lg-6">
+            <label for="number_of_intake">Number of Intake:</label>
+            <input type="check" id="number_of_intake" value="{{ diet.number_of_intake }}" name="number_of_intake" maxlength="255" required class="form-control">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-6">
+            <label for="level">Level:</label>
+            <input type="text" id="level" value="{{ diet.level }}" name="level" maxlength="255" required class="form-control">
+        </div>
+        <div class="col-lg-6">
+            <label for="image">Image:</label>
+            {% if diet.image %}
+            <img id="diet_image_preview" src="{{ diet.image.url }}" alt="Diet Image" width="200" height="150">
+            {% else %}
+            <p>No image found.</p>
+            {% endif %}
+            <input type="file" name="image" id="diet_image_input" onchange="previewImage(event)">
+        </div>
+    </div>
+     <div class="row">
+        <div class="col-lg-6">
+            <label for="carbs">Carbs:</label>
+            <input type="checkbox" id="carbs" name="carbs" {% if diet.carbs %}checked{% endif %} >
+        </div>
+        <div class="col-lg-6">
+            <label for="protein">Protein:</label>
+                       <input type="checkbox" id="protein" name="protein" {% if diet.protein %}checked{% endif %} >
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-6">
+            <label for="fat">Fat:</label>
+                     <input type="checkbox" id="fat" name="fat" {% if diet.fat %}checked{% endif %} >
+
+        </div>
+    </div>
+        <div class="col-lg-6">
+            <!-- Additional fields can be added here if needed -->
+        </div>
+    </div>
+    <div class="mt-4">
+        <button type="submit" class="btn btn-primary">Update Diet</button>
+        <a href="{% url 'diet_list' %}" class="btn btn-danger">Back</a>
+    </div>
+</form>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+    <!-- /.content -->
+  </div>
+
+
+<script>
+        function previewPhoto(event) {
+            const reader = new FileReader();
+            reader.onload = function () {
+                const preview = document.getElementById('diet_photo_preview');
+                preview.src = reader.result;
+            }
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    </script>
+    <!-- Main conten
+{% include 'backend/footer.html' %}
+
+  <!-- /.navbar -->

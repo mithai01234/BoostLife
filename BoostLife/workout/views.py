@@ -107,6 +107,7 @@ from .models import Video, Workout
 @login_required(login_url='backend/login')
 def video_list(request):
     videos = Video.objects.all().order_by('-id')
+
     return render(request, 'backend/video_list.html', {'videos': videos})
 
 @login_required(login_url='backend/login')
@@ -117,18 +118,25 @@ def add_video(request):
         workout = get_object_or_404(Workout, id=workout_id)
         name = request.POST.get('name')
         video = request.FILES.get('video')
+        type = request.POST.get('type')
+        video_url = request.POST.get('video_url')
         time = request.POST.get('time')
         repetition_time = request.POST.get('repetition_time')
         recommended = request.POST.get('recommended') == 'on' if 'recommended' in request.POST else False
 
-        Video.objects.create(
-            workout=workout,
-            name=name,
-            video=video,
-            time=time,
-            repetition_time=repetition_time,
-            recommended=recommended
-        )
+        if video or video_url:
+            Video.objects.create(
+                workout=workout,
+                name=name,
+                type=type,
+                video=video,
+                video_url=video_url,
+                time=time,
+                repetition_time=repetition_time,
+                recommended=recommended
+            )
+            return redirect('video_list')
+
         return redirect('video_list')
 
     return render(request, 'backend/add_video.html', {'workouts': workouts})
@@ -143,6 +151,8 @@ def edit_video(request, video_id):
         video.name = request.POST.get('name')
         if request.FILES.get('video'):
             video.video = request.FILES.get('video')
+        if request.POST.get('video_url'):
+            video.video_url = request.POST.get('video_url')
         video.time = request.POST.get('time')
         video.repetition_time = request.POST.get('repetition_time')
         video.recommended = request.POST.get('recommended') == 'on' if 'recommended' in request.POST else False

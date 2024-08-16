@@ -31,6 +31,8 @@ ALLOWED_HOSTS = ['*']
 import os
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # Application definition
+# settings.py
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -167,3 +169,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 STATIC_URL = 'staticfiles/'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'influencer.views.InfluencerBackend',
+    'registration.views.CustomUserBackend',# Replace 'myapp' with your app name
+]

@@ -46,7 +46,7 @@
             <th>Name</th>
             <th>Email</th>
             <th>Phone</th>
-            <th>Type</th>
+            <th>Commission Type</th>
             <th>Commission</th>
             <th>Status</th>
             <th>Actions</th>
@@ -60,7 +60,15 @@
                 <td>{{ i.name }}</td>
                 <td>{{ i.email }}</td>
                 <td>{{ i.phone }}</td>
-                <td>{{ i.type }}</td>
+<td>
+    {% if i.commission_type == "1" %}
+        Flat(₹)
+    {% elif i.commission_type == "2" %}
+        Percentage(%)
+    {% else %}
+        <!-- Handle other cases if needed -->
+    {% endif %}
+</td>
                 <td>{{ i.commission }}</td>
                 <td>
                     {% if i.status %}

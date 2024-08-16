@@ -44,6 +44,7 @@ class CustomUserManager(BaseUserManager):
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     email=models.EmailField( unique=True)
+    is_influencer = models.BooleanField(default=False)
     id= models.AutoField(primary_key=True)
     phone_number = models.CharField(max_length=15)  # You can adjust the max_length as needed.
     name = models.CharField(max_length=255,null=True)
@@ -88,7 +89,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     def has_module_perms(self, app_label):
         return True  # Custom implementation if needed
     def __str__(self):
-        return f"{self.id}"
+        return f"{self.email}"
     class Meta:
         ordering = ['email']  # Adjust ordering field
 

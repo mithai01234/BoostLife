@@ -1,101 +1,167 @@
- {% include 'backend/header.html' %}
-   {% include 'backend/sidebar.html' %}
+{% load static %}
 
+{% include 'backend/header.html' %}
+{% include 'backend/sidebar.html' %}
 
- {% load static %}
-  <!-- Content Wrapper. Contains page content -->
-<!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
+<div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <div class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1 class="m-0"><?= $page_title;?></h1>
-          </div><!-- /.col -->
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Video</li>
-            </ol>
-          </div><!-- /.col -->
-        </div><!-- /.row -->
-      </div><!-- /.container-fluid -->
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0"><?= $page_title;?></h1>
+                </div><!-- /.col -->
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Video</li>
+                    </ol>
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
     </div>
 
-      <div class="container-xl">
-
-    <div class="table-responsive">
-        <div class="table-wrapper">
-             <div class="col-12 ">
-                <a href="{%  url 'add_video' %}"><button class="btn btn-success btn-sm"><i class="fa fa-plus"></i> Add  </button></a>
-
-              </div>
-            <div class="table-title">
-                <div class="row">
-                    <div class="col-sm-8"><h2>Video <b>Details</b></h2></div>
-
+    <div class="container-xl">
+        <div class="table-responsive">
+            <div class="table-wrapper">
+                <div class="col-12">
+                    <a href="{% url 'add_video' %}">
+                        <button class="btn btn-success btn-sm"><i class="fa fa-plus"></i> Add </button>
+                    </a>
                 </div>
+                <div class="table-title">
+                    <div class="row">
+                        <div class="col-sm-8">
+                            <h2>Video <b>Details</b></h2>
+                        </div>
+                    </div>
+                </div>
+
+                <table id="example1" class="table table-striped table-hover table-bordered">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Video ID</th>
+                            <th>Name</th>
+                            <th>Time</th>
+                            <th>Repetition Time</th>
+                            <th>Video</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for i in videos %}
+                            <td>{{ forloop.counter }}</td>
+                            <td>Video_No._{{ i.id }}</td>
+                            <td>{{ i.name }}</td>
+                            <td>{{ i.time }}</td>
+                            <td>{{ i.repetition_time }}</td>
+                            <td>
+                                {% if i.type == '1' %}
+                                    {% if i.video %}
+                                        <video width="200" controls>
+                                            <source src="{{ i.video.url }}" type="video/mp4">
+                                            Your browser does not support the video tag.
+                                        </video>
+                                    {% else %}
+                                        <p>No video available</p>
+                                    {% endif %}
+                                {% elif i.type == '2' %}
+                                    {% if i.video_url %}
+{{i.video_url}}                                    {% else %}
+                                        <p>No video URL available</p>
+                                    {% endif %}
+                                {% else %}
+                                    <p>Invalid type</p>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if i.status %}
+                                    <a href="{% url 'deactivate_video' i.id %}" class="btn btn-danger text-white">Deactivate</a>
+                                {% else %}
+                                    <a href="{% url 'activate_video' i.id %}" class="btn btn-success text-white">Activate</a>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{% url 'view_video' i.id %}" class="view" title="View" data-toggle="tooltip"><i class="fa fa-eye"></i></a>
+                                <a href="{% url 'edit_video' i.id %}" class="edit" title="Edit" data-toggle="tooltip"><i class="fa fa-edit"></i></a>
+                                <a href="{% url 'delete_video' i.id %}" class="delete" title="Delete" data-toggle="tooltip"><i class="fa fa-trash"></i></a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
-
-            <table id="example1" class="table table-striped table-hover table-bordered">
-     <thead>
-        <tr>
-            <th>#</th>
-            <th>Video ID</th>
-            <th>Name</th>
-            <th>Time</th>
-            <th>Repetition Time</th>
-            <th>Video</th>
-            <th>Status</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for i in videos %}
-        <tr>
-            <td>{{ forloop.counter }}</td>
-            <td>Video_No._{{ i.id }}</td>
-            <td>{{ i.name }}</td>
-            <td>{{ i.time }}</td>
-            <td>{{ i.repetition_time }}</td>
-            <td>
-                {% if i.video %}
-                <video width="200" controls>
-                    <source src="{{ i.video.url }}" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video>
-                {% else %}
-                <p>No video available</p>
-                {% endif %}
-            </td>
-            <td>
-                {% if i.status %}
-                <a href="{% url 'deactivate_video' i.id %}" class="btn btn-danger text-white">Deactivate</a>
-                {% else %}
-                <a href="{% url 'activate_video' i.id %}" class="btn btn-success text-white">Activate</a>
-                {% endif %}
-            </td>
-            <td>
-                <a href="{% url 'view_video' i.id %}" class="view" title="View" data-toggle="tooltip"><i class="fa fa-eye"></i></a>
-                <a href="{% url 'edit_video' i.id %}" class="edit" title="Edit" data-toggle="tooltip"><i class="fa fa-edit"></i></a>
-                <a href="{% url 'delete_video' i.id %}" class="delete" title="Delete" data-toggle="tooltip"><i class="fa fa-trash"></i></a>
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-
-
         </div>
     </div>
 </div>
-    <!-- /.content-header -->
 
-    <!-- Main content -->
-
-      <!-- /.content -->
-  </div>
 {% include 'backend/footer.html' %}
 
-  <!-- /.navbar -->
+<script>
+    // JavaScript for handling video URL preview in iframes
+    function previewVideoFromUrl(event) {
+        const url = event.target.value;
+        const videoIframe = document.getElementById('video_frame'); // Ensure your iframe ID matches
+
+        if (url) {
+            // Extract video ID from URL (assuming it's a YouTube URL)
+            const videoId = extractVideoId(url);
+
+            // Construct iframe URL with video ID
+            const iframeSrc = `https://www.youtube.com/embed/${videoId}?enablejsapi=1`;
+
+            // Update iframe src attribute
+            videoIframe.src = iframeSrc;
+            videoIframe.style.display = 'block';
+
+            // Optional: Initialize YouTube Player API
+            // initYouTubePlayer(videoId);
+        } else {
+            videoIframe.style.display = 'none';
+        }
+    }
+
+    // Function to extract video ID from YouTube URL
+    function extractVideoId(url) {
+        let videoId = '';
+        if (url.includes('youtube.com')) {
+            const urlParams = new URLSearchParams(new URL(url).search);
+            videoId = urlParams.get('v');
+        } else if (url.includes('youtu.be')) {
+            videoId = url.split('/').pop();
+        }
+        return videoId;
+    }
+   {% if i.type == "2" %}
+    // Function to dynamically load YouTube video based on URL
+    function loadYouTubeVideo() {
+        const videoUrl = "{{ i.video_url }}";
+        const videoId = extractVideoId(videoUrl);
+        if (videoId) {
+            const iframeSrc = `https://www.youtube.com/embed/${videoId}?enablejsapi=1`;
+            const iframe = document.createElement('iframe');
+            iframe.width = '560';
+            iframe.height = '315';
+            iframe.src = iframeSrc;
+            iframe.title = 'YouTube video player';
+            iframe.frameBorder = '0';
+            iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+            iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+            iframe.allowFullscreen = true;
+            document.getElementById('video_display').appendChild(iframe);
+        }
+    }
+
+    function extractVideoId(url) {
+        const regex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+        const match = url.match(regex);
+        return match ? match[1] : null;
+    }
+
+    window.onload = function() {
+        loadYouTubeVideo();
+    };
+    {% endif %}
+</script>

@@ -36,11 +36,14 @@
                                             <div class="col-md-3 ps-5">
                                                 <h6 class="mb-0">Video:</h6>
                                             </div>
-                                            <div class="col-md-9 pe-5">
-                                                <video id="video_preview" width="320" height="240" controls>
+                                            <div class="col-md-9 pe-5" id="video_display">
+                                                {% if video.type == "1" %}
+                                                      <video id="video_preview" width="320" height="240" controls>
                                                     <source src="{{ video.video.url }}" type="video/mp4">
                                                     Your browser does not support the video tag.
                                                 </video>
+                                                {% elif video.type == "2" %}
+                                                {% endif %}
                                             </div>
                                         </div>
                                     </div>
@@ -54,31 +57,26 @@
                                                 <div class="col-md-9 pe-5">
                                                     <p class="form-control-lg">{{ video.name }}</p>
                                                 </div>
-
+                                            </div>
                                             <hr class="mx-n3">
-
-
+                                            <div class="row align-items-center py-3">
                                                 <div class="col-md-3 ps-5">
                                                     <h6 class="mb-0">Repetition time:</h6>
                                                 </div>
                                                 <div class="col-md-9 pe-5">
                                                     <p class="form-control-lg">{{ video.repetition_time }}</p>
                                                 </div>
-
+                                            </div>
                                             <hr class="mx-n3">
-
-
+                                            <div class="row align-items-center py-3">
                                                 <div class="col-md-3 ps-5">
                                                     <h6 class="mb-0">Video Exercise Id:</h6>
                                                 </div>
                                                 <div class="col-md-9 pe-5">
                                                     <p class="form-control-lg">Exercise_No._{{ video.id }}</p>
                                                 </div>
-
                                             </div>
                                             <hr class="mx-n3">
-
-
                                             <div class="row align-items-center py-3">
                                                 <div class="col-md-3 ps-5">
                                                     <h6 class="mb-0">Time:</h6>
@@ -107,4 +105,36 @@
     <!-- Main content -->
     <!-- /.content -->
 </div>
+<script>
+    {% if video.type == "2" %}
+    // Function to dynamically load YouTube video based on URL
+    function loadYouTubeVideo() {
+        const videoUrl = "{{ video.video_url }}";
+        const videoId = extractVideoId(videoUrl);
+        if (videoId) {
+            const iframeSrc = `https://www.youtube.com/embed/${videoId}?enablejsapi=1`;
+            const iframe = document.createElement('iframe');
+            iframe.width = '560';
+            iframe.height = '315';
+            iframe.src = iframeSrc;
+            iframe.title = 'YouTube video player';
+            iframe.frameBorder = '0';
+            iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+            iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+            iframe.allowFullscreen = true;
+            document.getElementById('video_display').appendChild(iframe);
+        }
+    }
+
+    function extractVideoId(url) {
+        const regex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+        const match = url.match(regex);
+        return match ? match[1] : null;
+    }
+
+    window.onload = function() {
+        loadYouTubeVideo();
+    };
+    {% endif %}
+</script>
 {% include 'backend/footer.html' %}

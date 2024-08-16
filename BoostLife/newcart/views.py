@@ -374,26 +374,3 @@ class CartDetailsMainAPIView(APIView):
             return Response(serializer.data[0], status=status.HTTP_200_OK)
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-from django.views import View
-
-class ClearCartView(APIView):
-    permission_classes = [IsAuthenticated]
-
-    def delete(self, request, *args, **kwargs):
-        user_id = request.query_params.get('user_id')
-
-        if not user_id:
-            return JsonResponse({'error': 'user_id parameter is required'}, status=400)
-
-        try:
-            user = CustomUser.objects.get(id=user_id)
-
-            Cart.objects.filter(u_id=user).delete()
-
-            return JsonResponse({'message': f'All items removed from the cart for user ID: {user_id}'}, status=200)
-
-        except CustomUser.DoesNotExist:
-            return JsonResponse({'error': f'User with ID {user_id} does not exist'}, status=404)
-        except Exception as e:
-            return JsonResponse({'error': f'An error occurred: {e}'}, status=500)

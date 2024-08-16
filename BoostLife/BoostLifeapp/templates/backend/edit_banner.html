@@ -64,11 +64,17 @@
 
                                 <div class="col-lg-6">
                                     <label for="category">Category:</label>
-                                    <select id="category" name="category" class="form-control">
+             <select id="category" name="category" class="form-control">
     <option value="1" {% if item.category == "1" %}selected{% endif %}>Home Page</option>
-    <option value="2" {% if item.category == "2" %}selected{% endif %}>WorkOut Page</option>
+    <option value="2" {% if item.category == "2" %}selected{% endif %}>Workout Page</option>
     <option value="3" {% if item.category == "3" %}selected{% endif %}>Diet Page</option>
     <option value="4" {% if item.category == "4" %}selected{% endif %}>Product Page</option>
+    <option value="5" {% if item.category == "5" %}selected{% endif %}>Workout (Beginner)</option>
+    <option value="6" {% if item.category == "6" %}selected{% endif %}>Workout (Intermediate)</option>
+    <option value="7" {% if item.category == "7" %}selected{% endif %}>Workout (Advanced)</option>
+    <option value="8" {% if item.category == "8" %}selected{% endif %}>Diet (Beginner)</option>
+    <option value="9" {% if item.category == "9" %}selected{% endif %}>Diet (Intermediate)</option>
+    <option value="10" {% if item.category == "10" %}selected{% endif %}>Diet (Advanced)</option>
 </select>
 
                                 </div>

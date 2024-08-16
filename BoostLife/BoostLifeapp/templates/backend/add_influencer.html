@@ -53,22 +53,29 @@
             <label for="address">Address:</label>
             <textarea id="address" name="address" required class="form-control"></textarea>
         </div>
-        <div class="col-lg-6">
-            <label for="type">Type:</label>
-            <input type="text" id="type" name="type" maxlength="10" required class="form-control">
-        </div>
+<!--        <div class="col-lg-6">-->
+<!--            <label for="type">Type:</label>-->
+<!--            <input type="text" id="type" name="type" maxlength="10" required class="form-control">-->
+<!--        </div>-->
     </div>
     <div class="row">
         <div class="col-lg-6">
             <label for="commission">Commission:</label>
             <input type="number" id="commission" name="commission" required class="form-control">
         </div>
+    <div class="col-lg-6">
+    <label for="type">Commission Type:</label>
+    <select id="type" class="form-control" name="commission_type">
+        <option value="1">Flat(₹)</option>
+        <option value="2">Percentage(%)</option>
+    </select>
+</div>
+    </div>
+    <div class="row">
      <div class="col-lg-6">
             <label for="type">PassBook Details:</label>
             <textarea type="text" id="pass" name="pass"  required class="form-control"></textarea>
         </div>
-    </div>
-    <div class="row">
         <div class="col-lg-6">
             <label for="code">Code:</label>
             <input type="text" id="code" name="code" readonly class="form-control">

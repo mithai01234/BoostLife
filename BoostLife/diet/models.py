@@ -39,7 +39,8 @@ class DietVideo(models.Model):
     precautions = models.CharField(max_length=1000)
     status = models.BooleanField(default=True)
     timeoffood_id = models.ForeignKey(TimeofFood, unique=True,on_delete=models.CASCADE, null=True, blank=True)
-
+    video_url = models.CharField(max_length=800, blank=True)
+    type = models.CharField(max_length=8, blank=True)
     def __str__(self):
         return f"Diet Video {self.id}"
 

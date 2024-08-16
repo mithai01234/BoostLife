@@ -1,0 +1,95 @@
+{% include 'backend/header.html' %}
+{% include 'backend/sidebar.html' %}
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card card-info">
+                        <div class="card-header">
+                            <h3 class="card-title">View Diet Video</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <label for="preptime">Prep Time:</label>
+                                    <p>{{ dietvideo.preptime }}</p>
+                                </div>
+                                <div class="col-lg-6">
+                                    <label for="carbs">Carbs:</label>
+                                    <p>{{ dietvideo.carbs }}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <label for="fat">Fat:</label>
+                                    <p>{{ dietvideo.fat }}</p>
+                                </div>
+                                <div class="col-lg-6">
+                                    <label for="protein">Protein:</label>
+                                    <p>{{ dietvideo.protein }}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                 <div class="col-md-9 pe-5" id="video_display">
+                                                {% if dietvideo.type == "1" %}
+                                                      <video id="video_preview" width="320" height="240" controls>
+                                                    <source src="{{ dietvideo.video.url }}" type="video/mp4">
+                                                    Your browser does not support the video tag.
+                                                </video>
+                                                {% elif dietvideo.type == "2" %}
+                                                {% endif %}
+                                            </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <label for="precautions">Precautions:</label>
+                                    <p>{{ dietvideo.precautions }}</p>
+                                </div>
+                            </div>
+                            <div class="mt-4">
+
+                                <a href="{% url 'dietvideo_list' %}" class="btn btn-primary">Back to List</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<script>
+    {% if dietvideo.type == "2" %}
+    // Function to dynamically load YouTube video based on URL
+    function loadYouTubeVideo() {
+        const videoUrl = "{{ dietvideo.video_url }}";
+        const videoId = extractVideoId(videoUrl);
+        if (videoId) {
+            const iframeSrc = `https://www.youtube.com/embed/${videoId}?enablejsapi=1`;
+            const iframe = document.createElement('iframe');
+            iframe.width = '560';
+            iframe.height = '315';
+            iframe.src = iframeSrc;
+            iframe.title = 'YouTube video player';
+            iframe.frameBorder = '0';
+            iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+            iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+            iframe.allowFullscreen = true;
+            document.getElementById('video_display').appendChild(iframe);
+        }
+    }
+
+    function extractVideoId(url) {
+        const regex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+        const match = url.match(regex);
+        return match ? match[1] : null;
+    }
+
+    window.onload = function() {
+        loadYouTubeVideo();
+    };
+    {% endif %}
+</script>
+{% include 'backend/footer.html' %}

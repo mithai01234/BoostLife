@@ -8,7 +8,14 @@ urlpatterns = [
     path('backend/catagoryapp/edit_item/<int:myid>/', catedit_item, name="catagory/edit_item"),
     path('backend/catagoryapp/update_item/<int:myid>/', catupdate_item, name="catagory/update_item"),
 
-    path('backend/productapp/', product, name="productapp"),
+	path('backend/level/', level, name="levelapp"),
+	path('backend/leveladd/', leveladd, name="leveladd"),
+	path('backend/level/delete_item/<int:myid>/', leveldelete_item, name="level/delete_item"),
+	path('backend/level/edit_item/<int:myid>/', leveledit_item, name="level/edit_item"),
+	path('backend/level/update_item/<int:myid>/', levelupdate_item, name="level/update_item"),
+
+
+	path('backend/productapp/', product, name="productapp"),
     path('backend/productadd/', productadd, name="productadd"),
     path('backend/productapp/delete_item/<int:myid>/', delete_item, name="delete_item"),
     path('backend/productapp/edit_item/<int:myid>/', edit_item, name="edit_item"),

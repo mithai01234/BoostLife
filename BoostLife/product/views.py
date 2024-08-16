@@ -1,11 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Catagory,Product
+from .models import Catagory,Product,Level
 from newcart.models import Stock
 from django.contrib import messages
 
 from django.shortcuts import render, redirect, get_object_or_404
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+
 @login_required(login_url='backend/login')
 def catagory(request):
     catagoryapp=Catagory.objects.all()
@@ -51,6 +52,53 @@ def catupdate_item(request, myid):
 
     catagoryapp.save()
     return redirect('catagoryapp')
+
+
+@login_required(login_url='backend/login')
+def level(request):
+    catagoryapp=Level.objects.all()
+
+    context={
+        'banform': catagoryapp
+
+    }
+    return render(request,'backend/level.html',context)
+@login_required(login_url='backend/login')
+def leveladd(request):
+    if request.method == "POST":
+        contact = Level()
+        name = request.POST.get('name')
+        image = request.FILES.get('image')
+        contact.name = name
+        contact.image = image
+        contact.save()
+        return redirect('levelapp')  # Replace 'category_list' with the name of the URL you want to redirect to
+    return render(request, 'backend/Leveladd.html')
+@login_required(login_url='backend/login')
+def leveldelete_item(request, myid):
+    catagoryapp=Level.objects.get(id=myid)
+    catagoryapp.delete()
+    return redirect('levelapp')
+@login_required(login_url='backend/login')
+def leveledit_item(request, myid):
+    sel_catform=Level.objects.get(id=myid)
+    cat = Level.objects.all()
+    context = {
+        'cat': cat,
+        'sel_proform':sel_catform
+
+    }
+    return render(request,'backend/leveledit.html',context)
+@login_required(login_url='backend/login')
+def levelupdate_item(request, myid):
+    catagoryapp=Level.objects.get(id=myid)
+
+    catagoryapp.name = request.POST.get('name')
+    if request.FILES.get('image'):
+        catagoryapp.image = request.FILES.get('image')
+
+    catagoryapp.save()
+    return redirect('levelapp')
 
 
 @login_required(login_url='backend/login')
@@ -141,7 +189,6 @@ def edit_item(request, myid):
 @login_required(login_url='backend/login')
 def update_item(request, myid):
     productapp = Product.objects.get(id=myid)
-
     productapp.name = request.POST.get('title')
     productapp.description = request.POST.get('description')
     if request.FILES.get('image'):

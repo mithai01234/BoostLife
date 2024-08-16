@@ -1,0 +1,113 @@
+{% include 'backend/header.html' %}
+{% include 'backend/sidebar.html' %}
+
+{% load static %}
+<style>
+    .success-message {
+        color: green;
+        font-weight: bold;
+        border: 1px solid green;
+        padding: 10px;
+        margin: 10px 0;
+        background-color: #dff0d8; /* Optional background color */
+    }
+    /* Style for the image preview */
+    #item_photo_preview {
+        margin-top: 10px;
+        max-width: 200px; /* Adjust the size as needed */
+        max-height: 200px; /* Adjust the size as needed */
+        display: none; /* Initially hidden */
+    }
+</style>
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content">
+        <div class="container-fluid">
+            <br><br>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card card-info">
+                        <div class="card-header">
+                            <h3 class="card-title">Add Partner</h3>
+                        </div>
+                        <div class="card-body">
+                            <form method="POST" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <label for="partner_id">Partner ID:</label>
+                                        <input type="text" id="partner_id" name="partner_id" readonly class="form-control">
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <label for="name">Name:</label>
+                                        <input type="text" id="name" name="name" maxlength="100" required class="form-control">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <label for="store_name">Store Name:</label>
+                                        <input type="text" id="store_name" name="store_name" maxlength="100" required class="form-control">
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <label for="phone_number">Phone Number:</label>
+                                        <input type="text" id="phone_number" name="phone_number" maxlength="15" required class="form-control">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <label for="address">Address:</label>
+                                        <input type="text" id="address" name="address" maxlength="255" required class="form-control">
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <label for="logo">Logo:</label>
+                                        <input type="file" id="logo" name="logo" class="form-control" onchange="previewPhoto(event)">
+                                        <!-- Image preview -->
+                                        <img id="item_photo_preview" src="" alt="Logo Preview">
+                                    </div>
+                                </div>
+                                <div class="mt-4">
+                                    <button type="submit" class="btn btn-primary">Add Partner</button>
+                                    <a href="{% url 'partner_list' %}" class="btn btn-danger">Back</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- /.content -->
+</div>
+
+<script>
+    // Function to generate a random alphanumeric string
+    function generatePartnerID() {
+        const prefix = 'P-';
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        let result = prefix;
+        for (let i = 0; i < 8; i++) {
+            result += characters.charAt(Math.floor(Math.random() * characters.length));
+        }
+        return result;
+    }
+
+    // Function to preview the image when selected
+    function previewPhoto(event) {
+        const preview = document.getElementById('item_photo_preview');
+        const reader = new FileReader();
+        reader.onload = function () {
+            preview.src = reader.result;
+            preview.style.display = 'block'; // Show the preview after loading
+        }
+        reader.readAsDataURL(event.target.files[0]);
+    }
+
+    // Automatically generate and set the partner_id when the page loads
+    document.addEventListener('DOMContentLoaded', function () {
+        const partnerIDField = document.getElementById('partner_id');
+        partnerIDField.value = generatePartnerID();
+    });
+</script>
+
+{% include 'backend/footer.html' %}

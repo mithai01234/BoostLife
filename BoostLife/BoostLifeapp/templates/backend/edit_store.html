@@ -1,0 +1,66 @@
+{% include 'backend/header.html' %}
+{% include 'backend/sidebar.html' %}
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content">
+			<br>
+							<br>
+        <div class="container-fluid">
+            <div class="row">
+
+                <div class="col-md-12">
+                    <div class="card card-info">
+                        <div class="card-header">
+                            <h3 class="card-title">Edit Store</h3>
+                        </div>
+                        <div class="card-body">
+                            <form method="POST" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <label for="name">Name:</label>
+                                        <input type="text" id="name" name="name" value="{{ store.name }}" class="form-control">
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <label for="newimage">Store Image:</label>
+                                        <input type="file" id="newimage" name="newimage" class="form-control-file">
+                                        {% if store.newimage %}
+                                            <img src="{{ store.newimage.url }}" alt="{{ store.name }}" class="img-thumbnail mt-2" style="max-height: 150px;">
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <label for="address">Address:</label>
+                                        <textarea id="address" name="address" class="form-control">{{ store.address }}</textarea>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <label for="description">Description:</label>
+                                        <textarea id="description" name="description" class="form-control">{{ store.description }}</textarea>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <label for="url">Website URL:</label>
+                                        <input type="url" id="url" name="url" value="{{ store.url }}" class="form-control">
+                                    </div>
+
+                                </div>
+                                <div class="mt-4">
+                                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                                    <a href="{% url 'list_store' %}" class="btn btn-danger">Back</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- /.content -->
+</div>
+
+{% include 'backend/footer.html' %}

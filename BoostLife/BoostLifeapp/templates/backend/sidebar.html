@@ -2,8 +2,8 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4" style="background-color:#001F3F">
     <!-- Brand Logo -->
     <a href="{%  url 'backend/dashboard' %}" class="brand-link">
-      <img src="{%  static 'assets/images/boost.jpeg' %}" alt="BoostLife Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-      <span class="brand-text font-weight-light">Boost Life</span>
+      <img src="{%  static 'assets/images/boost.jpeg' %}" alt="FikeFit Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+      <span class="brand-text font-weight-light">FikeFit</span>
     </a>
 
     <!-- Sidebar -->
@@ -38,6 +38,111 @@
 
             </ul>
           </li>
+
+<li class="nav-item">
+            <a href="#" class="nav-link">
+<i class="nav-icon fa fa-credit-card"></i> <!-- For a user circle icon -->
+              <p>
+               Subscription
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{%  url 'package_list' %}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Manage Subscriptions</p>
+                </a>
+              </li>
+
+            </ul>
+          </li>
+
+
+<li class="nav-item">
+            <a href="#" class="nav-link">
+<i class="nav-icon fas fa-user-circle"></i> <!-- For a user circle icon -->
+              <p>
+               Partners
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{%  url 'partner_list' %}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Manage Partners</p>
+                </a>
+              </li>
+
+            </ul>
+          </li>
+
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-plus"></i>
+              <p>
+               Article
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{%  url 'article_list' %}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Manage Article</p>
+                </a>
+              </li>
+
+            </ul>
+          </li>
+
+<li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-utensils"></i>
+              <p>
+               Diet services
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{%  url 'diet_list' %}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Manage Diet services</p>
+                </a>
+              </li>
+
+            </ul>
+ <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{%  url 'dietvideo_list' %}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Manage Diet Videos</p>
+                </a>
+              </li>
+
+            </ul>
+ <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{%  url 'ingredient_list' %}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Manage Diet Ingredients</p>
+                </a>
+              </li>
+
+            </ul>
+ <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{%  url 'timeoffood_list' %}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Manage  Meal Times</p>
+                </a>
+              </li>
+
+            </ul>
+          </li>
+
 <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-stopwatch"></i>
@@ -113,11 +218,30 @@
 
             </ul>
           </li>
+					    <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fa fa-store"></i>
+              <p>
+               Store
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{%  url 'list_store' %}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Manage Store</p>
+                </a>
+              </li>
+
+            </ul>
+          </li>
+
 <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-folder"></i>
               <p>
-               Category
+               Masters
                 <i class="fas fa-angle-left right"></i>
               </p>
             </a>
@@ -126,6 +250,15 @@
                 <a href="{%  url 'catagoryapp' %}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Manage Category</p>
+                </a>
+              </li>
+
+            </ul>
+	<ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{%  url 'levelapp' %}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Manage Level</p>
                 </a>
               </li>
 

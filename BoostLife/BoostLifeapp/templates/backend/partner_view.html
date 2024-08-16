@@ -1,0 +1,90 @@
+{% include 'backend/header.html' %}
+{% include 'backend/sidebar.html' %}
+{% load static %}
+
+<style>
+    .success-message {
+        color: green;
+        font-weight: bold;
+        border: 1px solid green;
+        padding: 10px;
+        margin: 10px 0;
+        background-color: #dff0d8; /* Optional background color */
+    }
+</style>
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card card-info">
+                        <div class="card-header">
+                            <h3 class="card-title">View Partner</h3>
+                        </div>
+                        <div class="card-body">
+                            {% if partner %}
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <label for="partner_id">Partner ID:</label> {{ partner.partner_id }}
+                                </div>
+                                <div class="col-lg-6">
+                                    <label for="partner_name">Name:</label> {{ partner.name }}
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <label for="store_name">Store Name:</label> {{ partner.store_name }}
+                                </div>
+                                <div class="col-lg-6">
+                                    <label for="phone_number">Phone Number:</label> {{ partner.phone_number }}
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <label for="address">Address:</label> {{ partner.address }}
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="row align-items-center py-3">
+                                        <div class="col-md-3 ps-5">
+                                            <label class="mb-0">Partner Logo</label>
+                                        </div>
+                                        <div class="col-md-9 pe-5">
+                                            {% if partner.logo %}
+                                            <img src="{{ partner.logo.url }}" alt="Partner Logo" width="200" height="150">
+                                            {% else %}
+                                            <p>No logo found.</p>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <label for="status">Status:</label>
+                                    {% if partner.status %}
+                                    Active
+                                    {% else %}
+                                    Inactive
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="mt-4">
+                                <a href="{% url 'partner_list' %}" class="btn btn-danger">Back</a>
+                            </div>
+                            {% else %}
+                            <p>No partner details available.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- /.content -->
+</div>
+
+{% include 'backend/footer.html' %}

@@ -53,17 +53,34 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-6">
-                                        <label for="video">Video:</label>
-                                        <input type="file" name="video" id="video_input" onchange="previewVideo(event)" required class="form-control">
-                                        <video id="video_preview" width="200" height="150" controls style="display: none;">
-                                            <source src="" type="video/mp4">
-                                            Your browser does not support the video tag.
-                                        </video>
+                                        <label for="video_option">Video Option:</label>
+                                        <select id="video_option" name="type" class="form-control" onchange="toggleVideoInput()">
+                                            <option value="1">Upload Video</option>
+                                            <option value="2">Video URL</option>
+                                        </select>
                                     </div>
-                                     <div class="col-lg-6">
-                                         <br>
-                                        <label for="repetition_time">Recommended:</label>
-                                        <input type="checkbox" id="recommended" name="recommended" >
+                                    <div class="col-lg-6">
+                                        <div id="video_file_input">
+                                            <label for="video_file">Upload Video File:</label>
+                                            <input type="file" name="video_file" id="video_input" class="form-control" onchange="previewVideo(event)">
+                                            <video id="video_preview" width="200" height="150" controls style="display: none;">
+                                                <source src="" type="video/mp4">
+                                                Your browser does not support the video tag.
+                                            </video>
+                                        </div>
+                                        <div id="video_url_input" style="display: none;">
+                                            <label for="video_url">Video URL:</label>
+                                            <input type="text" name="video_url" id="video_url" class="form-control" onchange="previewVideoFromUrl(event)">
+                                            <iframe id="video_iframe" width="560" height="315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <br>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <label for="recommended">Recommended:</label>
+                                        <input type="checkbox" id="recommended" name="recommended">
                                     </div>
                                 </div>
                                 <div class="mt-4">
@@ -103,13 +120,88 @@
         }
     }
 
-  function formatTime(seconds) {
-    const h = Math.floor(seconds / 3600);
-    const m = Math.floor((seconds % 3600) / 60);
-    const s = Math.floor(seconds % 60);
-    return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
-}
+    function previewVideoFromUrl(event) {
+        const url = event.target.value;
+        const videoIframe = document.getElementById('video_iframe');
 
+        if (url) {
+            // Extract video ID from URL
+            const videoId = extractVideoId(url);
 
+            // Construct iframe URL with video ID
+            const iframeSrc = `https://www.youtube.com/embed/${videoId}?enablejsapi=1`;
+
+            // Update iframe src attribute
+            videoIframe.src = iframeSrc;
+            videoIframe.style.display = 'block';
+
+            // Initialize YouTube Player API
+            initYouTubePlayer(videoId);
+        } else {
+            videoIframe.style.display = 'none';
+        }
+    }
+
+    function initYouTubePlayer(videoId) {
+        // Load YouTube Player API
+        const tag = document.createElement('script');
+        tag.src = 'https://www.youtube.com/iframe_api';
+        const firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        // Initialize the player once the API code downloads
+        window.onYouTubeIframeAPIReady = function() {
+            new YT.Player('video_iframe', {
+                videoId: videoId,
+                events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+        };
+    }
+
+    function onPlayerReady(event) {
+        // Fetch duration once player is ready
+        const duration = event.target.getDuration();
+        document.getElementById('time').value = formatTime(duration);
+    }
+
+    function onPlayerStateChange(event) {
+        // Handle state changes if needed
+    }
+
+    function formatTime(seconds) {
+        const h = Math.floor(seconds / 3600);
+        const m = Math.floor((seconds % 3600) / 60);
+        const s = Math.floor(seconds % 60);
+        return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+    }
+
+    function toggleVideoInput() {
+        const videoOption = document.getElementById('video_option').value;
+        const videoFileInput = document.getElementById('video_file_input');
+        const videoUrlInput = document.getElementById('video_url_input');
+
+        if (videoOption === 'file') {
+            videoFileInput.style.display = 'block';
+            videoUrlInput.style.display = 'none';
+            document.getElementById('video_input').required = true;
+            document.getElementById('video_url').required = false;
+        } else {
+            videoFileInput.style.display = 'none';
+            videoUrlInput.style.display = 'block';
+            document.getElementById('video_input').required = false;
+            document.getElementById('video_url').required = true;
+        }
+    }
+
+    function extractVideoId(url) {
+        // Regex to extract video ID from YouTube URL
+        const regex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+        const match = url.match(regex);
+        return match ? match[1] : null;
+    }
 </script>
+
 {% include 'backend/footer.html' %}

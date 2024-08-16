@@ -6,25 +6,32 @@ from .forms import CustomAuthenticationForm  # Assuming you have a custom authen
 AUTH_USER_MODEL = 'backendlogin.BackendCustomUser'
 from django.utils import timezone
 
+
 def login_view(request):
     if request.method == 'POST':
         form = CustomAuthenticationForm(request, request.POST)
         if form.is_valid():
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
-            user = authenticate(request, username=username, password=password,is_staff=True)
+            user = authenticate(request, username=username, password=password)
 
             if user is not None:
+                # Log the user in
                 login(request, user)
+                # Check if the user is staff after login
+                if not user.is_staff:
+                    return redirect('backend/login')  # or some other page
+
                 next_url = request.GET.get('next', reverse('backend/dashboard'))
                 return redirect(next_url)
             else:
                 return render(request, 'backend/login.html', {'form': form, 'error': 'Invalid login credentials'})
+        else:
+            return render(request, 'backend/login.html', {'form': form, 'error': 'Invalid login credentials'})
     else:
         form = CustomAuthenticationForm()
 
-    return render(request, 'backend/login.html', {'form': form, 'error': 'Invalid login credentials'})
-
+    return render(request, 'backend/login.html', {'form': form})
 
 
 def logout_view(request):
@@ -32,6 +39,8 @@ def logout_view(request):
     return redirect('backend/login')
 @login_required(login_url='backend/login')
 def dashboard(request):
+    if not request.user.is_staff:
+        return redirect('backend/login')
     return render(request, 'backend/dashboard.html')
 
 from registration.models import CustomUser,Otp

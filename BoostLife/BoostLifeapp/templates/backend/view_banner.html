@@ -79,17 +79,32 @@
                     <div class="col-md-3 ps-5">
                         <h6 class="mb-0">Category:</h6>
                     </div>
-                    <div class="col-md-9 pe-5"> {% if item.category == "1" %}
-                        <p class=" form-control-lg">Home Page</p>
+                 <div class="col-md-9 pe-5">
+    {% if item.category == "1" %}
+        <p class="form-control-lg">Home Page</p>
     {% elif item.category == "2" %}
-                                <p class=" form-control-lg">Workout Page</p>
+        <p class="form-control-lg">Workout Page</p>
     {% elif item.category == "3" %}
-                                <p class=" form-control-lg">Diet Page</p>
+        <p class="form-control-lg">Diet Page</p>
     {% elif item.category == "4" %}
-                                        <p class=" form-control-lg">Product Page</p>
+        <p class="form-control-lg">Product Page</p>
+    {% elif item.category == "5" %}
+        <p class="form-control-lg">Workout (Beginner)</p>
+    {% elif item.category == "6" %}
+        <p class="form-control-lg">Workout (Intermediate)</p>
+    {% elif item.category == "7" %}
+        <p class="form-control-lg">Workout (Advanced)</p>
+    {% elif item.category == "8" %}
+        <p class="form-control-lg">Diet (Beginner)</p>
+    {% elif item.category == "9" %}
+        <p class="form-control-lg">Diet (Intermediate)</p>
+    {% elif item.category == "10" %}
+        <p class="form-control-lg">Diet (Advanced)</p>
     {% else %}
-None    {% endif %}
-                    </div>
+        <p class="form-control-lg">None</p>
+    {% endif %}
+</div>
+
                 </div>
             </div>
         </div>

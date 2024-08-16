@@ -1,0 +1,67 @@
+{% include 'backend/header.html' %}
+{% include 'backend/sidebar.html' %}
+
+{% load static %}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0">{{ page_title }}</h1>
+                </div><!-- /.col -->
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">{{ page_title }}</li>
+                    </ol>
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </div>
+
+    <div class="container-xl">
+        <div class="table-responsive">
+            <div class="table-wrapper">
+                <div class="col-12 mb-3">
+                    <a href="{% url 'add_package' %}" class="btn btn-success btn-sm"><i class="fa fa-plus"></i> Add Package</a>
+                </div>
+                <div class="table-title mb-3">
+                    <div class="row">
+                        <div class="col-sm-8"><h2>Package <b>Details</b></h2></div>
+                    </div>
+                </div>
+
+                <table id="example1" class="table table-striped table-hover table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Sl No</th>
+                            <th>Name</th>
+                            <th>Package Amount(Rs.)</th>
+                            <th>Description</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for package in packages %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ package.name }}</td>
+                                <td>{{ package.package_amount }}</td>
+                                <td>{{ package.description|default:"N/A" }}</td>
+                                <td>
+                                    <a href="{% url 'edit_package' package.id %}" class="edit" title="Edit" data-toggle="tooltip"><i class="fa fa-edit"></i></a>
+                                    <a href="{% url 'delete_package' package.id %}" class="delete" title="Delete" data-toggle="tooltip"><i class="fa fa-trash"></i></a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% include 'backend/footer.html' %}

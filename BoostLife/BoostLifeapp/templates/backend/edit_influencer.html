@@ -51,10 +51,13 @@
                                         <label for="address">Address:</label>
                                         <textarea class="form-control" id="address" name="address" rows="3" required>{{ influencer.address }}</textarea>
                                     </div>
-                                    <div class="col-lg-6">
-                                        <label for="type">Type:</label>
-                                        <input type="text" value="{{ influencer.type }}" id="type" name="type" maxlength="255" required class="form-control">
-                                    </div>
+                                   <div class="col-lg-6">
+    <label for="type">Commission Type:</label>
+    <select id="type" name="commission_type" class="form-control" onchange="changeType(this.value)">
+        <option value="1" {% if influencer.commission_type == '1' %} selected {% endif %}>Flat(₹)</option>
+        <option value="2" {% if influencer.commission_type == '2' %} selected {% endif %}>Percentage(%)</option>
+    </select>
+</div>
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-6">
@@ -63,7 +66,7 @@
                                     </div>
                                     <div class="col-lg-6">
                                         <label for="code">Code:</label>
-                                        <input type="text" value="{{ influencer.code }}" id="code" name="code" maxlength="255" required class="form-control" readonly>
+                                        <input type="text" value="{{ influencer.code }}" id="code" name="code" maxlength="255" required class="form-control" >
                                     </div>
                                 </div>
                                 <div class="row">

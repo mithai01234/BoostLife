@@ -1,0 +1,89 @@
+{% include 'backend/header.html' %}
+{% include 'backend/sidebar.html' %}
+
+{% load static %}
+<style>
+    .success-message {
+        color: green;
+        font-weight: bold;
+        border: 1px solid green;
+        padding: 10px;
+        margin: 10px 0;
+        background-color: #dff0d8; /* Optional background color */
+    }
+</style>
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                {% if message %}
+                <ul class="messages">
+                    <p class="alert-danger">{{ message }}</p>
+                </ul>
+                {% endif %}
+                <div class="col-md-12">
+                    <div class="card card-info">
+                        <div class="card-header">
+                            <h3 class="card-title">Add Ingredient</h3>
+                        </div>
+                        <div class="card-body">
+                            <form method="POST" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <label for="name">Name:</label>
+                                        <input type="text" id="name" name="name" maxlength="255" required class="form-control">
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <label for="measurement">Measurement:</label>
+                                        <input type="text" id="measurement" name="measurement" maxlength="50" required class="form-control">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="col-md-3 ps-5">
+                                            <label class="mb-0">Ingredient Photo:</label>
+                                        </div>
+                                        <div class="col-md-9 pe-5">
+                                            <img id="item_photo_preview" src="" alt="No Image" width="200" height="150">
+                                            <input type="file" name="image" id="item_photo_input" onchange="previewPhoto(event)" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <label for="timeoffood_id">Meal Name:</label>
+                                        <select id="timeoffood_id" name="timeoffood_id" class="form-control">
+                                            <option value="" selected disabled>Select Meal Name</option>
+                                            {% for timeoffood in timeoffoods %}
+                                            <option value="{{ timeoffood.id }}">{{ timeoffood.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mt-4">
+                                    <button type="submit" class="btn btn-primary">Add Ingredient</button>
+                                    <a href="{% url 'ingredient_list' %}" class="btn btn-danger">Back</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script>
+    function previewPhoto(event) {
+        const reader = new FileReader();
+        reader.onload = function () {
+            const preview = document.getElementById('item_photo_preview');
+            preview.src = reader.result;
+        }
+        reader.readAsDataURL(event.target.files[0]);
+    }
+</script>
+{% include 'backend/footer.html' %}

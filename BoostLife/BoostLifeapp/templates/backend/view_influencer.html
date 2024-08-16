@@ -53,7 +53,13 @@
                                         <label for="address">Address:</label> {{ influencer.address }}
                                     </div>
                                     <div class="col-lg-6">
-                                        <label for="type">Type:</label> {{ influencer.type }}
+                                        <label for="type">Commission Type:</label>  {% if influencer.commission_type == "1" %}
+        Flat(₹)
+    {% elif influencer.commission_type == "2" %}
+        Percentage(%)
+    {% else %}
+        <!-- Handle other cases if needed -->
+    {% endif %}
                                     </div>
                                 </div>
                                 <div class="row">

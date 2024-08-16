@@ -1,0 +1,99 @@
+{% include 'backend/header.html' %}
+{% include 'backend/sidebar.html' %}
+
+{% load static %}
+<style>
+    .success-message {
+        color: green;
+        font-weight: bold;
+        border: 1px solid green;
+        padding: 10px;
+        margin: 10px 0;
+        background-color: #dff0d8; /* Optional background color */
+    }
+</style>
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content">
+        <div class="container-fluid">
+            <br><br>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card card-info">
+                        <div class="card-header">
+                            <h3 class="card-title">Add Time of Food</h3>
+                        </div>
+                        <div class="card-body">
+                            <form method="POST" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <label for="name">Name:</label>
+                                        <input type="text" id="name" name="name" maxlength="255" required class="form-control">
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <label for="number_of_cup">Number of Cup:</label>
+                                        <input type="text" id="number_of_cup" name="number_of_cup" maxlength="50" required class="form-control">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <label for="number_of_gram">Number of Gram:</label>
+                                        <input type="text" id="number_of_gram" name="number_of_gram" maxlength="50" required class="form-control">
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <label for="calories">Calories:</label>
+                                        <input type="text" id="calories" name="calories" maxlength="50" required class="form-control">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <label for="time">Time:</label>
+                                        <input type="text" id="time" name="time" maxlength="50" required class="form-control">
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <label for="diet_id">Diet:</label>
+                                        <select id="diet_id" name="diet_id" class="form-control" required>
+                                            {% for diet in diets %}
+                                            <option value="{{ diet.id }}">{{ diet.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="col-md-3 ps-5">
+                                            <label class="mb-0">Time of Food Photo:</label>
+                                        </div>
+                                        <div class="col-md-9 pe-5">
+                                            <img id="item_photo_preview" src="" alt="No Image" width="200" height="150">
+                                            <input type="file" name="image" id="item_photo_input" onchange="previewPhoto(event)" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mt-4">
+                                    <button type="submit" class="btn btn-primary">Add Time of Food</button>
+                                    <a href="{% url 'timeoffood_list' %}" class="btn btn-danger">Back</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script>
+    function previewPhoto(event) {
+        const reader = new FileReader();
+        reader.onload = function () {
+            const preview = document.getElementById('item_photo_preview');
+            preview.src = reader.result;
+        }
+        reader.readAsDataURL(event.target.files[0]);
+    }
+</script>
+
+{% include 'backend/footer.html' %}

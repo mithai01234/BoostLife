@@ -1,0 +1,360 @@
+{% include 'backend/header.html' %}
+{% include 'backend/sidebar.html' %}
+
+{% load static %}
+<style>
+    .success-message {
+        color: green;
+        font-weight: bold;
+        border: 1px solid green;
+        padding: 10px;
+        margin: 10px 0;
+        background-color: #dff0d8; /* Optional background color */
+    }
+</style>
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                {% if message %}
+                <ul class="messages">
+                    <p class="alert-danger">{{ message }}</p>
+                </ul>
+                {% endif %}
+                <div class="col-md-12">
+                    <div class="card card-info">
+                        <div class="card-header">
+                            <h3 class="card-title">Edit Diet Video</h3>
+                        </div>
+                        <div class="card-body">
+                            <form method="POST" enctype="multipart/form-data" action="{% url 'dietvideo_update' dietvideo.id %}">
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <label for="preptime">Prep Time:</label>
+                                        <input type="text" id="preptime" value="{{ dietvideo.preptime }}" name="preptime" maxlength="50" required class="form-control">
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <label for="carbs">Carbs:</label>
+                                        <input type="text" id="carbs" value="{{ dietvideo.carbs }}" name="carbs" maxlength="50" required class="form-control">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <label for="fat">Fat:</label>
+                                        <input type="text" id="fat" value="{{ dietvideo.fat }}" name="fat" maxlength="50" required class="form-control">
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <label for="protein">Protein:</label>
+                                        <input type="text" id="protein" value="{{ dietvideo.protein }}" name="protein" maxlength="50" required class="form-control">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                       <div class="col-lg-6">
+                                        <label for="video">Video:</label>
+                                        {% if dietvideo.type == '1' %}
+                                            <input type="file" name="video" id="video_input" onchange="previewVideo(event)" class="form-control">
+                                            <video id="video_preview" width="200" height="150" controls style="display: none;">
+                                                <!-- Display the currently selected video first -->
+                                                <source src="{{ dietvideo.video.url }}" type="video/mp4">
+                                                <!-- Display the newly selected video -->
+                                                <source id="new_video_source" src="" type="video/mp4">
+                                                Your browser does not support the video tag.
+                                            </video>
+                                        {% elif dietvideo.type == '2' %}
+                                            <label for="video_url">Video URL:</label>
+                                            <input type="text" id="video_url" name="video_url" class="form-control" value="{{ dietvideo.video_url }}" onchange="loadYouTubeVideo(event)">
+                                            <div id="video_display" style="margin-top: 10px;"></div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <label for="precautions">Precautions:</label>
+                                        <textarea id="precautions" name="precautions" maxlength="1000" required class="form-control">{{ dietvideo.precautions }}</textarea>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <label for="timeoffood_id">Time of Food:</label>
+                                        <select id="timeoffood_id" name="timeoffood_id" class="form-control">
+                                            <option value="" disabled>Select Time of Food</option>
+                                            {% for timeoffood in timeoffoods %}
+                                            <option value="{{ timeoffood.id }}" {% if dietvideo.timeoffood_id and dietvideo.timeoffood_id.id == timeoffood.id %}selected{% endif %}>{{ timeoffood.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mt-4">
+                                    <button type="submit" class="btn btn-primary">Update Diet Video</button>
+                                    <a href="{% url 'dietvideo_list' %}" class="btn btn-danger">Back</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script>
+    // JavaScript for handling video previews and dynamic loading based on video type
+
+    // Function to preview uploaded video
+    function previewVideo(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const videoPreview = document.getElementById('video_preview');
+            const videoSource = videoPreview.querySelector('source');
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                videoSource.src = e.target.result;
+                videoPreview.style.display = 'block';
+                videoPreview.load();
+
+                videoPreview.onloadedmetadata = function() {
+                    const duration = videoPreview.duration;
+                    document.getElementById('time').value = formatTime(duration);
+                };
+            };
+
+            reader.readAsDataURL(file);
+        }
+    }
+
+    // Function to load YouTube video based on URL input
+    function loadYouTubeVideo(event) {
+        const url = event.target.value;
+        const videoDisplay = document.getElementById('video_display');
+
+        if (url.includes('youtube.com') || url.includes('youtu.be')) {
+            const videoId = extractVideoId(url);
+            const iframeSrc = `https://www.youtube.com/embed/${videoId}?enablejsapi=1`;
+
+            // Clear existing iframe if any
+            videoDisplay.innerHTML = '';
+
+            // Create new iframe for YouTube video
+            const iframe = document.createElement('iframe');
+            iframe.width = '560';
+            iframe.height = '315';
+            iframe.src = iframeSrc;
+            iframe.title = 'YouTube video player';
+            iframe.frameBorder = '0';
+            iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+            iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+            iframe.allowFullscreen = true;
+
+            videoDisplay.appendChild(iframe);
+        } else {
+            videoDisplay.innerHTML = '<p>Please enter a valid YouTube URL.</p>';
+        }
+    }
+
+    // Function to extract video ID from YouTube URL
+    function extractVideoId(url) {
+        let videoId = '';
+        if (url.includes('youtube.com')) {
+            const urlParams = new URLSearchParams(new URL(url).search);
+            videoId = urlParams.get('v');
+        } else if (url.includes('youtu.be')) {
+            videoId = url.split('/').pop();
+        }
+        return videoId;
+    }
+
+    // Function to format video duration
+    function formatTime(seconds) {
+        const h = Math.floor(seconds / 3600);
+        const m = Math.floor((seconds % 3600) / 60);
+        const s = Math.floor(seconds % 60);
+        return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+    }
+    function previewVideo(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const videoPreview = document.getElementById('video_preview');
+            const videoSource = videoPreview.querySelector('source');
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                videoSource.src = e.target.result;
+                videoPreview.style.display = 'block';
+                videoPreview.load();
+
+                videoPreview.onloadedmetadata = function() {
+                    const duration = videoPreview.duration;
+                    document.getElementById('time').value = formatTime(duration);
+                };
+            };
+
+            reader.readAsDataURL(file);
+        }
+    }
+
+    function previewVideoFromUrl(event) {
+        const url = event.target.value;
+        const videoIframe = document.getElementById('video_iframe');
+
+        if (url) {
+            // Extract video ID from URL
+            const videoId = extractVideoId(url);
+
+            // Construct iframe URL with video ID
+            const iframeSrc = `https://www.youtube.com/embed/${videoId}?enablejsapi=1`;
+
+            // Update iframe src attribute
+            videoIframe.src = iframeSrc;
+            videoIframe.style.display = 'block';
+
+            // Initialize YouTube Player API
+            initYouTubePlayer(videoId);
+        } else {
+            videoIframe.style.display = 'none';
+        }
+    }
+
+    function initYouTubePlayer(videoId) {
+        // Load YouTube Player API
+        const tag = document.createElement('script');
+        tag.src = 'https://www.youtube.com/iframe_api';
+        const firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        // Initialize the player once the API code downloads
+        window.onYouTubeIframeAPIReady = function() {
+            new YT.Player('video_iframe', {
+                videoId: videoId,
+                events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+        };
+    }
+
+    function onPlayerReady(event) {
+        // Fetch duration once player is ready
+        const duration = event.target.getDuration();
+        document.getElementById('time').value = formatTime(duration);
+    }
+
+    function onPlayerStateChange(event) {
+        // Handle state changes if needed
+    }
+
+    function formatTime(seconds) {
+        const h = Math.floor(seconds / 3600);
+        const m = Math.floor((seconds % 3600) / 60);
+        const s = Math.floor(seconds % 60);
+        return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+    }
+function previewVideo(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const videoPreview = document.getElementById('video_preview');
+            const videoSource = videoPreview.querySelector('source');
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                videoSource.src = e.target.result;
+                videoPreview.style.display = 'block';
+                videoPreview.load();
+
+                videoPreview.onloadedmetadata = function() {
+                    const duration = videoPreview.duration;
+                    document.getElementById('time').value = formatTime(duration);
+                };
+            };
+
+            reader.readAsDataURL(file);
+        }
+    }
+
+    function previewVideoFromUrl(event) {
+        const url = event.target.value;
+        const videoIframe = document.getElementById('video_iframe');
+
+        if (url) {
+            // Extract video ID from URL
+            const videoId = extractVideoId(url);
+
+            // Construct iframe URL with video ID
+            const iframeSrc = `https://www.youtube.com/embed/${videoId}?enablejsapi=1`;
+
+            // Update iframe src attribute
+            videoIframe.src = iframeSrc;
+            videoIframe.style.display = 'block';
+
+            // Initialize YouTube Player API
+            initYouTubePlayer(videoId);
+        } else {
+            videoIframe.style.display = 'none';
+        }
+    }
+
+    function initYouTubePlayer(videoId) {
+        // Load YouTube Player API
+        const tag = document.createElement('script');
+        tag.src = 'https://www.youtube.com/iframe_api';
+        const firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        // Initialize the player once the API code downloads
+        window.onYouTubeIframeAPIReady = function() {
+            new YT.Player('video_iframe', {
+                videoId: videoId,
+                events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+        };
+    }
+
+    function onPlayerReady(event) {
+        // Fetch duration once player is ready
+        const duration = event.target.getDuration();
+        document.getElementById('time').value = formatTime(duration);
+    }
+
+    function onPlayerStateChange(event) {
+        // Handle state changes if needed
+    }
+
+    function formatTime(seconds) {
+        const h = Math.floor(seconds / 3600);
+        const m = Math.floor((seconds % 3600) / 60);
+        const s = Math.floor(seconds % 60);
+        return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+    }
+
+    function toggleVideoInput() {
+        const videoOption = document.getElementById('video_option').value;
+        const videoFileInput = document.getElementById('video_file_input');
+        const videoUrlInput = document.getElementById('video_url_input');
+
+        if (videoOption === 'file') {
+            videoFileInput.style.display = 'block';
+            videoUrlInput.style.display = 'none';
+            document.getElementById('video_input').required = true;
+            document.getElementById('video_url').required = false;
+        } else {
+            videoFileInput.style.display = 'none';
+            videoUrlInput.style.display = 'block';
+            document.getElementById('video_input').required = false;
+            document.getElementById('video_url').required = true;
+        }
+    }
+
+    function extractVideoId(url) {
+        // Regex to extract video ID from YouTube URL
+        const regex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+        const match = url.match(regex);
+        return match ? match[1] : null;
+    }
+</script>
+
+{% include 'backend/footer.html' %}

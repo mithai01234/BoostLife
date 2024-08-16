@@ -9,7 +9,7 @@ class Workout(models.Model):
     num_exercise = models.CharField(max_length=50)
     image = models.ImageField(upload_to='images/')
     status= models.BooleanField(default=True)
-    # banner=models.ImageField(upload_to='images/')
+    banner=models.ImageField(upload_to='images/')
 
 
     def __str__(self):
@@ -20,6 +20,8 @@ class Video(models.Model):
     workout = models.ForeignKey(Workout, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     video = models.FileField(upload_to='videos/')
+    video_url = models.CharField(max_length=800,blank=True)
+    type=  models.CharField(max_length=8,blank=True)
     time = models.CharField(max_length=50)
     repetition_time = models.CharField(max_length=50)
     status= models.BooleanField(default=True)
